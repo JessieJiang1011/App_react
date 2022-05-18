@@ -12,6 +12,7 @@ class Favorite extends Component {
         users:[]
     }
     this.props.GETFavoriteState();
+    console.log('store2', props);
     this.data();
     }
     
@@ -22,7 +23,7 @@ class Favorite extends Component {
         for (let index = 0;index <data.length; index++){
             const user = data[index];
             const fetchUsers = async (user) =>{
-                const api_call = await fetch(`http://api.github.com/users/${user}`)
+                const api_call = await fetch(`http://api.github.com/users/${user}`);
                 const data = await api_call.json();
                 return {data}
         };
@@ -154,5 +155,4 @@ const mapStateToProps = (state) =>({
     Favorite: state.Favorite
 })
 
-export default connect(mapStateToProps, {AddToFavorite,
-DeleteFromFav,GETFavoriteState}) (Favorite);
+export default connect(mapStateToProps, {AddToFavorite,DeleteFromFav,GETFavoriteState}) (Favorite);
