@@ -1,6 +1,6 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
-import Favorite from './Favorite_reducer';
+import Favorite from "./Favorite_reducer";
 import Users from "./Users_Reducer";
 
 const rootReducer = combineReducers({ 

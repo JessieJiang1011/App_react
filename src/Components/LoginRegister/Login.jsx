@@ -19,15 +19,17 @@ class Login extends Component {
         e.preventDefault();
         this.setState({[e.target.name]: e.target.value});
         const Data = {password:this.state.password, email:this.state.email};
+        // console.log(`email: ${Data.email}, password: ${Data.password}, URL_backend: ${this.props.URL_backend}`);
         axios.post(`${this.props.URL_backend}/Login`, {Data})
         .then((res)=>{
-            if(res['data']){
+            if(res['data'].token){
                 // successfully 
-                localStorage.setItem('token', res.data.Token);
+                console.log('succeed! props:', this.props);
+                localStorage.setItem('token', res.data.token);
                 this.props.ReUserState(true);
                 this.props.props.history.push('/Profile')
             }
-            if(res['message']){
+            if(res['data'].message){
                 // fail
                 const err = res.data.message;
                 this.setState({errors:err})
@@ -43,11 +45,11 @@ class Login extends Component {
             {this.state.errors}
         </i>: '' }
         <hr></hr>
-            <form class="form-signin">
-            <h4 class="h3 mb-3 font-weight-normal grey">Please sign in</h4>
-            <input value={this.state.email} onChange={this.onChange} name="email" type="email"  class="form-control" placeholder="Email address" />
-            <input value={this.state.password} onChange={this.onChange} name="password" type="password"  class="form-control" placeholder="Password" />
-            <button onClick={this.Login} class="btn btn-md btn-primary btn-block" type="submit">Sign in</button>
+            <form className="form-signin">
+            <h4 className="h3 mb-3 font-weight-normal grey">Please sign in</h4>
+            <input value={this.state.email} onChange={this.onChange} name="email" type="email"  className="form-control" placeholder="Email address" />
+            <input value={this.state.password} onChange={this.onChange} name="password" type="password"  className="form-control" placeholder="Password" />
+            <button onClick={this.Login} className="btn btn-md btn-primary btn-block" type="submit">Sign in</button>
         </form>
         </>
       );
@@ -60,7 +62,7 @@ Login.propTypes = {
 }
 
 const mapToProps = (state) =>({
-    Users:state.users
+    Users:state.Users
 })
 
   

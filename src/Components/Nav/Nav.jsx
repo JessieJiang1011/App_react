@@ -9,12 +9,13 @@ class Nav extends Component {
       };
     }
 
-    async componentWillMount(){
+    async componentDidMount(){
       await this.props.store.subscribe(()=>{
         this.setState({
           isAuthentication: this.props.store.getState()['Users']['isAuthenticated']
         })
       })
+      console.log('state:', this.state.isAuthentication);
     }
 
     Logout = ()=>{
@@ -32,6 +33,11 @@ class Nav extends Component {
                       <i className="fas fa-heart"></i> Favorites
                     </Link>
                 </nav>
+                {this.state.isAuthentication ? 
+                <Link to="/Profile" className='p-2 text-dark' >
+                  <i className='fas fas-user' ></i> Profile
+                </Link>: ''}
+
                 {this.state.isAuthentication ? 
                 <button 
                 onClick={this.Logout}

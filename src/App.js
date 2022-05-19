@@ -6,6 +6,9 @@ import Specific from './Components/GitHub/Specific';
 import Data from './Components/GitHub/Data';
 import Favorite from './Components/Favorite/Favorite';
 import LoginRegister from './Components/LoginRegister/MainPage';
+import Profile from './Components/Profile/Profile';
+// private Route
+import PrivateRoute from './PrivateRoute';
 
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -32,9 +35,24 @@ class App extends Component {
     );
   }
 
+  // check if user is auth
+  async componentDidMount(){
+    if(localStorage.getItem('token')){
+      this.store.dispatch(ReUserState(true));
+      this.setState({isAuthentication:true})
+    } else {
+      this.store.dispatch(ReUserState(false));
+      this.setState({isAuthentication:false})
+    }
+    await this.store.subscribe(()=>{
+      this.setState({ isAuthentication: this.store.getState()['Users']['isAuthenticated'] })
+    })
+    console.log('state from App:', this.state.isAuthentication);
+  }
+
   Logout = ()=>{
-    // when we sign up successfully, will store our token with name 'Token', which our server gives to us
-    localStorage.removeItem('Token');
+    // when we sign up successfully, will store our token with name 'token', which our server gives to us
+    localStorage.removeItem('token');
     this.store.dispatch(ReUserState(false));
     this.setState({isAuthentication: false})
   }
@@ -52,6 +70,7 @@ class App extends Component {
           <Route exact path='/Specific/:login' component={Specific} />
           <Route exact path='/Favorite' component={Favorite} />
           <Route exact path='/LoginRegister' component={LoginRegister} />
+          <PrivateRoute exact path='/Profile' Logout={this.Logout} Auth={this.state.isAuthentication} component={Profile} />
 
 
         </Router>
